@@ -263,6 +263,17 @@ input:focus-visible,
   margin-top: var(--space-4);
 }
 
+.app-footer {
+  width: min(100%, 72rem);
+  margin: var(--space-4) auto 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-reactivate-button {
+  min-width: 14rem;
+}
+
 .inventory-stage,
 .order-controls,
 .sheet {
@@ -486,7 +497,8 @@ input:focus-visible,
 }
 
 .chart-line-level,
-.chart-line-position {
+.chart-line-position,
+.chart-line-demand {
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -498,6 +510,32 @@ input:focus-visible,
 
 .chart-line-position {
   stroke: var(--accent-cool);
+  stroke-dasharray: 10 10;
+}
+
+.chart-line-demand {
+  stroke: rgba(93, 91, 85, 0.95);
+}
+
+.chart-point-level,
+.chart-point-position,
+.chart-point-demand {
+  stroke-width: 3;
+}
+
+.chart-point-level {
+  fill: rgba(217, 119, 87, 0.18);
+  stroke: var(--accent);
+}
+
+.chart-point-position {
+  fill: rgba(106, 155, 204, 0.16);
+  stroke: var(--accent-cool);
+}
+
+.chart-point-demand {
+  fill: rgba(250, 249, 245, 0.95);
+  stroke: rgba(93, 91, 85, 0.95);
 }
 
 .chart-legend {
@@ -514,18 +552,36 @@ input:focus-visible,
   gap: 0.45rem;
 }
 
-.legend-dot {
-  width: 0.8rem;
-  height: 0.8rem;
+.legend-swatch {
+  width: 1.8rem;
+  height: 0;
+  border-top: 3px solid currentColor;
+  position: relative;
+}
+
+.legend-swatch::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 999px;
+  background: currentColor;
+  transform: translateX(-50%);
 }
 
-.legend-dot-level {
-  background: var(--accent);
+.legend-swatch-level {
+  color: var(--accent);
 }
 
-.legend-dot-position {
-  background: var(--accent-cool);
+.legend-swatch-position {
+  color: var(--accent-cool);
+  border-top-style: dotted;
+}
+
+.legend-swatch-demand {
+  color: rgba(93, 91, 85, 0.95);
 }
 
 .section-heading,

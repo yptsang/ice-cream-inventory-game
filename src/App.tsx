@@ -12,6 +12,7 @@ import { useGameStore } from './state/gameStore';
 
 const App = () => {
   const [isTopBarMinimized, setIsTopBarMinimized] = useState(false);
+  const [isFooterUtilityPanelVisible, setIsFooterUtilityPanelVisible] = useState(true);
   const { formatCurrency, t } = useI18n();
   const {
     advanceToNextDay,
@@ -103,7 +104,24 @@ const App = () => {
           <SettingsPanel onCancel={closeSettings} onSave={saveSettings} settings={settings} />
         ) : null}
 
-        <FooterUtilityPanel onOpenSettings={openSettings} />
+        <footer className="app-footer">
+          {!isFooterUtilityPanelVisible ? (
+            <button
+              className="ghost-button footer-reactivate-button"
+              type="button"
+              onClick={() => setIsFooterUtilityPanelVisible(true)}
+            >
+              {t('footerShowUtilityPanel')}
+            </button>
+          ) : null}
+        </footer>
+
+        {isFooterUtilityPanelVisible ? (
+          <FooterUtilityPanel
+            onDismiss={() => setIsFooterUtilityPanelVisible(false)}
+            onOpenSettings={openSettings}
+          />
+        ) : null}
       </div>
     </>
   );
