@@ -6,7 +6,7 @@ import type { GameSettings } from './types';
  * These values are used when the app has no saved settings in localStorage.
  */
 export const DEFAULT_EDUCATOR_SETTINGS: GameSettings = {
-  holdingCostPerUnit: 0.35,
+  holdingCostPerUnit: 0.50,
   orderingCostPer250Units: 80,
   stockoutCostPerUnit: 1.4,
   leadTimeDays: 2,
