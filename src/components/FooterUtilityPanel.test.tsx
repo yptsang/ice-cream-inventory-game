@@ -5,13 +5,14 @@ import { I18nProvider } from '../i18n';
 import { FooterUtilityPanel } from './FooterUtilityPanel';
 
 describe('FooterUtilityPanel', () => {
-  it('renders language buttons above educator settings and triggers settings access', async () => {
+  it('renders language buttons above educator settings and dismisses after a language selection', async () => {
     const user = userEvent.setup();
+    const onDismiss = vi.fn();
     const onOpenSettings = vi.fn();
 
     render(
       <I18nProvider>
-        <FooterUtilityPanel onOpenSettings={onOpenSettings} />
+        <FooterUtilityPanel onDismiss={onDismiss} onOpenSettings={onOpenSettings} />
       </I18nProvider>
     );
 
@@ -24,5 +25,9 @@ describe('FooterUtilityPanel', () => {
     await user.click(screen.getByRole('button', { name: /educator settings/i }));
 
     expect(onOpenSettings).toHaveBeenCalledTimes(1);
+
+    await user.click(screen.getByRole('button', { name: '简体中文' }));
+
+    expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 });

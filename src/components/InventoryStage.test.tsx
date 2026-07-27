@@ -8,7 +8,7 @@ describe('InventoryStage', () => {
   it('provides a screen reader description for the inventory trend chart', () => {
     const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
 
-    render(
+    const { container } = render(
       <InventoryStage
         draftOrderQuantity={18}
         settings={DEFAULT_SETTINGS}
@@ -19,9 +19,12 @@ describe('InventoryStage', () => {
     expect(
       screen.getByText(/inventory trend chart covering 1 recorded day/i)
     ).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /inventory level and inventory position over time/i })).toHaveAccessibleDescription(
-      /inventory level starts at/i
-    );
+    expect(
+      screen.getByRole('img', { name: /inventory level, inventory position, and daily demand over time/i })
+    ).toHaveAccessibleDescription(/daily demand starts at/i);
+    expect(screen.getAllByText(/daily demand/i)).toHaveLength(2);
+    expect(container.querySelector('.chart-line-demand')).toBeInTheDocument();
+    expect(container.querySelector('.chart-line-position')).toBeInTheDocument();
   });
 
   it('shows in-transit inventory under Supplier and stockout cost under Customers', () => {
