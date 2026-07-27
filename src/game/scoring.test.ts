@@ -20,7 +20,7 @@ describe('evaluateMonthPerformance', () => {
   });
 
   it('returns the middle threshold band when the ratio is above the first limit but below the second', () => {
-    const result = evaluateMonthPerformance(480, 250, {
+    const result = evaluateMonthPerformance(650, 250, {
       ...DEFAULT_SETTINGS,
       minTotalUnitsSold: 100
     });

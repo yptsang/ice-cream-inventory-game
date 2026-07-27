@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS } from '../game/config';
 import { advanceDay, createNewRun } from '../game/engine';
@@ -22,5 +22,30 @@ describe('InventoryStage', () => {
     expect(screen.getByRole('img', { name: /inventory level and inventory position over time/i })).toHaveAccessibleDescription(
       /inventory level starts at/i
     );
+  });
+
+  it('shows in-transit inventory under Supplier and stockout cost under Customers', () => {
+    const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
+
+    render(
+      <InventoryStage
+        draftOrderQuantity={18}
+        settings={DEFAULT_SETTINGS}
+        run={result.run}
+      />
+    );
+
+    const supplier = screen.getByRole('heading', { level: 3, name: /supplier/i }).closest('article');
+    const customers = screen.getByRole('heading', { level: 3, name: /customers/i }).closest('article');
+    const store = screen.getByRole('heading', { level: 3, name: /store/i }).closest('article');
+
+    expect(supplier).not.toBeNull();
+    expect(customers).not.toBeNull();
+    expect(store).not.toBeNull();
+
+    expect(within(supplier as HTMLElement).getByText(/in transit/i)).toBeInTheDocument();
+    expect(within(supplier as HTMLElement).getByText(/today.s order/i)).toBeInTheDocument();
+    expect(within(customers as HTMLElement).getByText(/stockout/i)).toBeInTheDocument();
+    expect(within(store as HTMLElement).queryByText(/stockout/i)).not.toBeInTheDocument();
   });
 });

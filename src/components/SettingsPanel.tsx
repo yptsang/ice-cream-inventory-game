@@ -1,6 +1,7 @@
 import { FormEvent, useMemo, useState } from 'react';
 import type { GameSettings } from '../game/types';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
+import { useI18n } from '../i18n';
 
 interface SettingsPanelProps {
   settings: GameSettings;
@@ -9,6 +10,7 @@ interface SettingsPanelProps {
 }
 
 export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps) => {
+  const { t } = useI18n();
   const [holdingCost, setHoldingCost] = useState(settings.holdingCostPerUnit);
   const [orderingCost, setOrderingCost] = useState(settings.orderingCostPer250Units);
   const [stockoutCost, setStockoutCost] = useState(settings.stockoutCostPerUnit);
@@ -32,22 +34,22 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
     event.preventDefault();
 
     if (!isOrdered) {
-      setError('Thresholds must rise from band 1 to band 3.');
+      setError(t('settingsThresholdError'));
       return;
     }
 
     if (minSold < 0) {
-      setError('Minimum sold units must be zero or greater.');
+      setError(t('settingsMinimumSoldError'));
       return;
     }
 
     if (holdingCost < 0 || orderingCost < 0 || stockoutCost < 0) {
-      setError('Cost values must be zero or greater.');
+      setError(t('settingsCostValuesError'));
       return;
     }
 
     if (leadTimeDays < 1) {
-      setError('Lead time must be at least 1 day.');
+      setError(t('settingsLeadTimeError'));
       return;
     }
 
@@ -88,21 +90,21 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
       >
         <div className="sheet-header">
           <div>
-            <p className="eyebrow">Scoring settings</p>
-            <h2 id="settings-panel-title">Adjust game settings</h2>
+            <p className="eyebrow">{t('settingsScoringSettings')}</p>
+            <h2 id="settings-panel-title">{t('settingsAdjustGame')}</h2>
             <p className="support-copy" id="settings-panel-description">
-              Update the cost parameters, lead time, and end-of-run evaluation bands.
+              {t('settingsDescription')}
             </p>
           </div>
           <button className="ghost-button" type="button" onClick={onCancel}>
-            Close
+            {t('settingsClose')}
           </button>
         </div>
 
         <form className="stack-md" onSubmit={handleSubmit}>
           <div className="settings-grid">
             <label className="stack-sm" htmlFor="holding-cost">
-              <span>Holding cost per unit</span>
+              <span>{t('settingsHoldingCostPerUnit')}</span>
               <input
                 autoComplete="off"
                 id="holding-cost"
@@ -116,7 +118,7 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
             </label>
 
             <label className="stack-sm" htmlFor="ordering-cost">
-              <span>Ordering cost per 250 units</span>
+              <span>{t('settingsOrderingCostPer250')}</span>
               <input
                 autoComplete="off"
                 id="ordering-cost"
@@ -130,7 +132,7 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
             </label>
 
             <label className="stack-sm" htmlFor="stockout-cost">
-              <span>Stockout cost per unit</span>
+              <span>{t('settingsStockoutCostPerUnit')}</span>
               <input
                 autoComplete="off"
                 id="stockout-cost"
@@ -144,7 +146,7 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
             </label>
 
             <label className="stack-sm" htmlFor="lead-time-days">
-              <span>Lead time in days</span>
+              <span>{t('settingsLeadTimeDays')}</span>
               <input
                 autoComplete="off"
                 id="lead-time-days"
@@ -159,7 +161,7 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
           </div>
 
           <label className="stack-sm" htmlFor="min-sold">
-            <span>Minimum total units sold</span>
+            <span>{t('settingsMinimumTotalUnitsSold')}</span>
             <input
               autoComplete="off"
               id="min-sold"
@@ -173,9 +175,9 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
 
           {[bandA, bandB, bandC].map((band, index) => (
             <fieldset className="band-fieldset" key={band.label + index}>
-              <legend>Band {index + 1}</legend>
+              <legend>{t('settingsBand', { index: index + 1 })}</legend>
               <label className="stack-sm">
-                <span>Label</span>
+                <span>{t('settingsLabel')}</span>
                 <input
                   autoComplete="off"
                   name={`band-${index + 1}-label`}
@@ -190,7 +192,7 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
                 />
               </label>
               <label className="stack-sm">
-                <span>Maximum cost-per-unit ratio</span>
+                <span>{t('settingsMaximumCostRatio')}</span>
                 <input
                   autoComplete="off"
                   min={0}
@@ -217,10 +219,10 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
 
           <div className="inline-actions">
             <button className="secondary-button" type="button" onClick={onCancel}>
-              Cancel
+              {t('commonCancel')}
             </button>
             <button className="primary-button" type="submit">
-              Save Settings
+              {t('settingsSave')}
             </button>
           </div>
         </form>
