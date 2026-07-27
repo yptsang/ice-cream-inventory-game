@@ -1,0 +1,113 @@
+:root {
+  --bg: #141413;
+  --bg-soft: #1b1b19;
+  --surface: rgba(250, 249, 245, 0.94);
+  --surface-strong: #faf9f5;
+  --surface-muted: #e8e6dc;
+  --surface-tint: rgba(232, 230, 220, 0.82);
+  --ink: #141413;
+  --ink-soft: rgba(20, 20, 19, 0.78);
+  --muted: #5d5b55;
+  --line: rgba(20, 20, 19, 0.1);
+  --line-strong: rgba(20, 20, 19, 0.16);
+  --accent: #d97757;
+  --accent-soft: rgba(217, 119, 87, 0.14);
+  --accent-ink: #8f4a33;
+  --accent-cool: #6a9bcc;
+  --accent-cool-soft: rgba(106, 155, 204, 0.18);
+  --accent-olive: #788c5d;
+  --accent-olive-soft: rgba(120, 140, 93, 0.16);
+  --neutral-300: #b0aea5;
+  --success: #788c5d;
+  --danger: #c75d55;
+  --shadow: 0 22px 54px rgba(0, 0, 0, 0.18);
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.08);
+  --font-heading: 'Fredoka', 'Trebuchet MS', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Nunito', 'Trebuchet MS', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: 0.8rem;
+  --radius-md: 1.15rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --space-1: 0.4rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.4rem;
+  --space-5: 2rem;
+  --space-6: 2.6rem;
+  --text-xs: 0.78rem;
+  --text-sm: 0.92rem;
+  --text-md: 1rem;
+  --text-lg: 1.2rem;
+  --text-xl: 1.6rem;
+  --text-2xl: clamp(2rem, 5vw, 2.8rem);
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-slow: 380ms;
+  --ring: 0 0 0 3px rgba(106, 155, 204, 0.45);
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font-body);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(217, 119, 87, 0.18), transparent 24%),
+    radial-gradient(circle at 80% 0%, rgba(106, 155, 204, 0.16), transparent 20%),
+    linear-gradient(180deg, #191917 0%, #141413 100%);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-heading);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+legend {
+  font-family: var(--font-heading);
+}
+
+a,
+button,
+input[type='range'],
+input[type='number'] {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+::selection {
+  background: rgba(217, 119, 87, 0.24);
+  color: var(--surface-strong);
+}
