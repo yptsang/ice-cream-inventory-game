@@ -43,6 +43,21 @@ describe('SettingsGate', () => {
     expect(isSettingsSessionUnlocked()).toBe(true);
   });
 
+  it('moves focus into the dialog and closes on Escape', async () => {
+    const user = userEvent.setup();
+    const onCancel = vi.fn();
+
+    render(<SettingsGate onCancel={onCancel} onUnlock={vi.fn(async () => false)} />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/^password$/i)).toHaveFocus();
+    });
+
+    await user.keyboard('{Escape}');
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
   it('reuses the existing session unlock state', async () => {
     sessionStorage.setItem('ice-cream-game/settings-unlocked', 'true');
     const onUnlock = vi.fn(async () => true);

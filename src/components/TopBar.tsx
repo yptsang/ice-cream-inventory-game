@@ -43,7 +43,13 @@ export const TopBar = ({
               Day {Math.min(run.day, DAYS_IN_RUN)} | Order {draftOrderQuantity}
             </strong>
           </div>
-          <button className="ghost-button" type="button" onClick={onToggleMinimized}>
+          <button
+            aria-expanded="false"
+            aria-label="Resume order and status panel"
+            className="ghost-button"
+            type="button"
+            onClick={onToggleMinimized}
+          >
             Resume Panel
           </button>
         </div>
@@ -60,7 +66,13 @@ export const TopBar = ({
             Day {Math.min(run.day, DAYS_IN_RUN)} of {DAYS_IN_RUN}
           </h1>
         </div>
-        <button className="ghost-button" type="button" onClick={onToggleMinimized}>
+        <button
+          aria-expanded="true"
+          aria-label="Minimize order and status panel"
+          className="ghost-button"
+          type="button"
+          onClick={onToggleMinimized}
+        >
           Minimise
         </button>
       </div>

@@ -1,5 +1,6 @@
 import { FormEvent, useMemo, useState } from 'react';
 import type { GameSettings } from '../game/types';
+import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 
 interface SettingsPanelProps {
   settings: GameSettings;
@@ -17,6 +18,10 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
   const [bandB, setBandB] = useState(settings.thresholds[1]);
   const [bandC, setBandC] = useState(settings.thresholds[2]);
   const [error, setError] = useState('');
+  const dialogRef = useAccessibleDialog<HTMLElement>({
+    isOpen: true,
+    onClose: onCancel
+  });
 
   const isOrdered = useMemo(
     () => bandA.maxRatio < bandB.maxRatio && bandB.maxRatio < bandC.maxRatio,
@@ -77,7 +82,9 @@ export const SettingsPanel = ({ settings, onSave, onCancel }: SettingsPanelProps
         aria-labelledby="settings-panel-title"
         aria-modal="true"
         className="sheet"
+        ref={dialogRef}
         role="dialog"
+        tabIndex={-1}
       >
         <div className="sheet-header">
           <div>

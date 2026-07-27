@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { DEFAULT_SETTINGS_PASSWORD } from '../game/config';
+import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 import { isSettingsSessionUnlocked } from '../game/settingsAuth';
 
 interface SettingsGateProps {
@@ -10,6 +11,10 @@ interface SettingsGateProps {
 export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const dialogRef = useAccessibleDialog<HTMLElement>({
+    isOpen: true,
+    onClose: onCancel
+  });
 
   useEffect(() => {
     if (isSettingsSessionUnlocked()) {
@@ -35,7 +40,9 @@ export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
         aria-labelledby="settings-gate-title"
         aria-modal="true"
         className="sheet auth-sheet"
+        ref={dialogRef}
         role="dialog"
+        tabIndex={-1}
       >
         <p className="eyebrow">Educator access</p>
         <h2 id="settings-gate-title">Enter the settings password</h2>
