@@ -14,19 +14,19 @@ export const DEFAULT_EDUCATOR_SETTINGS: GameSettings = {
   thresholds: [
     {
       label: 'Excellent',
-      maxRatio: 1.55,
+      maxRatio: 2.4,
       description:
         'You balanced ordering, leftovers, and stockouts very well. Your cost per unit sold stayed lean.'
     },
     {
-      label: 'Balanced',
-      maxRatio: 2.25,
+      label: 'Not Bad',
+      maxRatio: 2.8,
       description:
         'You kept the shop moving, but there is still room to reduce cost or improve availability.'
     },
     {
-      label: 'Needs Attention',
-      maxRatio: 3.4,
+      label: 'Needs A Good Strategy',
+      maxRatio: 3.6,
       description:
         'Your strategy created too much waste or too many stockouts. Review the trade-off between risk and buffer stock.'
     }
