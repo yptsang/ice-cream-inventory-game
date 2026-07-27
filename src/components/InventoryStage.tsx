@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { GameRun, GameSettings } from '../game/types';
+import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 
 interface InventoryStageProps {
   draftOrderQuantity: number;
@@ -51,6 +52,14 @@ export const InventoryStage = ({
 }: InventoryStageProps) => {
   const [isChartExpanded, setIsChartExpanded] = useState(false);
   const [isLogicOpen, setIsLogicOpen] = useState(false);
+  const logicDialogRef = useAccessibleDialog<HTMLElement>({
+    isOpen: isLogicOpen,
+    onClose: () => setIsLogicOpen(false)
+  });
+  const expandedChartDialogRef = useAccessibleDialog<HTMLElement>({
+    isOpen: isChartExpanded,
+    onClose: () => setIsChartExpanded(false)
+  });
   const latestEntry = run.history.at(-1);
   const todayDemand = latestEntry?.demand ?? 0;
   const todaySoldUnits = latestEntry?.soldUnits ?? 0;
@@ -79,6 +88,15 @@ export const InventoryStage = ({
         .filter((entry) => entry.day === 1 || entry.day % xTickEvery === 0 || entry.day === 30)
         .map((entry) => entry.day)
     : [];
+  const chartDescription = run.history.length
+    ? `Inventory trend chart covering ${run.history.length} recorded day${
+        run.history.length === 1 ? '' : 's'
+      }. Inventory level starts at ${inventoryLevels[0]} units and ends at ${
+        inventoryLevels[inventoryLevels.length - 1]
+      } units. Inventory position starts at ${inventoryPositions[0]} units and ends at ${
+        inventoryPositions[inventoryPositions.length - 1]
+      } units.`
+    : 'Inventory trend chart will appear after the first day is recorded.';
 
   return (
     <section aria-labelledby="inventory-stage-title" className="inventory-stage supply-stage">
@@ -123,7 +141,12 @@ export const InventoryStage = ({
             🏪
           </div>
           <h3>Store</h3>
-          <div className="store-chart" aria-label="Inventory level and inventory position over time">
+          <div
+            aria-describedby="inventory-chart-description"
+            aria-label="Inventory level and inventory position over time"
+            className="store-chart"
+            role="img"
+          >
             <div className="chart-toolbar">
               <span className="chart-title">Inventory Trend</span>
               <button
@@ -134,6 +157,9 @@ export const InventoryStage = ({
                 Enlarge Chart
               </button>
             </div>
+            <p className="sr-only" id="inventory-chart-description">
+              {chartDescription}
+            </p>
             <svg
               viewBox={`0 0 ${chartWidth} ${chartHeight}`}
               aria-hidden="true"
@@ -269,7 +295,14 @@ export const InventoryStage = ({
 
       {isLogicOpen ? (
         <div className="overlay">
-          <section aria-labelledby="logic-title" aria-modal="true" className="sheet logic-modal" role="dialog">
+          <section
+            aria-labelledby="logic-title"
+            aria-modal="true"
+            className="sheet logic-modal"
+            ref={logicDialogRef}
+            role="dialog"
+            tabIndex={-1}
+          >
             <div className="sheet-header">
               <div>
                 <p className="eyebrow">Game Logic</p>
@@ -347,7 +380,9 @@ export const InventoryStage = ({
             aria-labelledby="expanded-chart-title"
             aria-modal="true"
             className="sheet chart-modal"
+            ref={expandedChartDialogRef}
             role="dialog"
+            tabIndex={-1}
           >
             <div className="sheet-header">
               <div>
@@ -358,7 +393,15 @@ export const InventoryStage = ({
                 Close
               </button>
             </div>
-            <div className="store-chart store-chart-expanded">
+            <div
+              aria-describedby="expanded-chart-description"
+              aria-label="Expanded inventory level and inventory position over time"
+              className="store-chart store-chart-expanded"
+              role="img"
+            >
+              <p className="sr-only" id="expanded-chart-description">
+                {chartDescription}
+              </p>
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} preserveAspectRatio="xMidYMid meet">
                 <text className="chart-axis-label" x={chartWidth / 2} y={chartHeight - 6} textAnchor="middle">
                   Day

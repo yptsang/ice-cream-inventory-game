@@ -32,6 +32,14 @@ body {
   border: 0;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[role='dialog']:focus-visible {
+  outline: 3px solid var(--accent-cool);
+  outline-offset: 3px;
+}
+
 .app-shell {
   position: relative;
   isolation: isolate;
