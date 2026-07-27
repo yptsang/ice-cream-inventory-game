@@ -28,6 +28,7 @@ export const TopBar = ({
   run,
   totalCost
 }: TopBarProps) => {
+  const todayDemand = run.history.at(-1)?.demand ?? 0;
   const inTransitUnits = run.incomingOrders.reduce(
     (total, incomingOrder) => total + incomingOrder.quantity,
     0
@@ -85,6 +86,10 @@ export const TopBar = ({
         <div>
           <span>In Transit</span>
           <strong>{inTransitUnits}</strong>
+        </div>
+        <div>
+          <span>Today&apos;s Demand</span>
+          <strong>{todayDemand}</strong>
         </div>
         <div>
           <span>Total Cost</span>

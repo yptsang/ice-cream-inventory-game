@@ -294,7 +294,7 @@ export const InventoryStage = ({
       </div>
 
       {isLogicOpen ? (
-        <div className="overlay">
+        <div className="overlay overlay-top-sheet">
           <section
             aria-labelledby="logic-title"
             aria-modal="true"
@@ -375,7 +375,7 @@ export const InventoryStage = ({
       ) : null}
 
       {isChartExpanded ? (
-        <div className="overlay">
+        <div className="overlay overlay-top-sheet">
           <section
             aria-labelledby="expanded-chart-title"
             aria-modal="true"
