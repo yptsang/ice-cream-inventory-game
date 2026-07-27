@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ActionBar } from './components/ActionBar';
+import { FooterUtilityPanel } from './components/FooterUtilityPanel';
 import { InventoryStage } from './components/InventoryStage';
 import { MonthResultSheet } from './components/MonthResultSheet';
 import { SettingsGate } from './components/SettingsGate';
@@ -102,11 +103,7 @@ const App = () => {
           <SettingsPanel onCancel={closeSettings} onSave={saveSettings} settings={settings} />
         ) : null}
 
-        <footer className="footer-settings" aria-label={t('footerEducatorControls')}>
-          <button className="ghost-button footer-settings-button" type="button" onClick={openSettings}>
-            {t('footerEducatorSettings')}
-          </button>
-        </footer>
+        <FooterUtilityPanel onOpenSettings={openSettings} />
       </div>
     </>
   );

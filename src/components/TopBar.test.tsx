@@ -5,7 +5,7 @@ import { advanceDay, createNewRun } from '../game/engine';
 import { TopBar } from './TopBar';
 
 describe('TopBar', () => {
-  it("shows today's demand in the sticky metrics row and exposes language buttons", () => {
+  it("shows today's demand in the sticky metrics row without crowding it with language buttons", () => {
     const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
 
     render(
@@ -22,6 +22,6 @@ describe('TopBar', () => {
     expect(screen.getByText(/today.s demand/i)).toBeInTheDocument();
     expect(screen.getByText(String(result.run.history.at(-1)?.demand ?? 0))).toBeInTheDocument();
     expect(screen.queryByText(/in transit/i)).not.toBeInTheDocument();
-    expect(screen.getByRole('group', { name: /language/i })).toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: /language/i })).not.toBeInTheDocument();
   });
 });
