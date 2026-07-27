@@ -683,6 +683,12 @@ input:focus-visible,
   z-index: 20;
 }
 
+.overlay-top-sheet {
+  align-items: start;
+  overflow-y: auto;
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--space-5));
+}
+
 .sheet {
   width: min(100%, 40rem);
   max-height: min(88vh, 48rem);
@@ -812,9 +818,12 @@ input:focus-visible,
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .metrics-grid,
   .stage-stats {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .top-bar .metrics-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .supply-chain-board {
@@ -838,7 +847,7 @@ input:focus-visible,
     margin-bottom: 1rem;
   }
 
-  .overlay {
+  .overlay:not(.overlay-top-sheet) {
     align-items: center;
   }
 }
