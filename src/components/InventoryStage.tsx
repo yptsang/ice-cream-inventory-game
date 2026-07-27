@@ -1,21 +1,13 @@
 import { useState } from 'react';
 import type { GameRun, GameSettings } from '../game/types';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
+import { useI18n } from '../i18n';
 
 interface InventoryStageProps {
   draftOrderQuantity: number;
   settings: GameSettings;
   run: GameRun;
 }
-
-const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
-
-const formatMoney = (value: number) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 2
-  }).format(value);
 
 const createLinePoints = (values: number[], width: number, height: number, padding: number) => {
   if (values.length === 0) {
@@ -50,6 +42,7 @@ export const InventoryStage = ({
   settings,
   run
 }: InventoryStageProps) => {
+  const { formatCurrency, formatNumber, formatPercent, t } = useI18n();
   const [isChartExpanded, setIsChartExpanded] = useState(false);
   const [isLogicOpen, setIsLogicOpen] = useState(false);
   const logicDialogRef = useAccessibleDialog<HTMLElement>({
@@ -63,6 +56,10 @@ export const InventoryStage = ({
   const latestEntry = run.history.at(-1);
   const todayDemand = latestEntry?.demand ?? 0;
   const todaySoldUnits = latestEntry?.soldUnits ?? 0;
+  const inTransitUnits = run.incomingOrders.reduce(
+    (total, incomingOrder) => total + incomingOrder.quantity,
+    0
+  );
   const inventoryLevels = run.history.map((entry) => entry.endingInventory);
   const inventoryPositions = run.history.map((entry) => entry.inventoryPosition);
   const yMax = Math.max(1, ...inventoryLevels, ...inventoryPositions);
@@ -89,24 +86,24 @@ export const InventoryStage = ({
         .map((entry) => entry.day)
     : [];
   const chartDescription = run.history.length
-    ? `Inventory trend chart covering ${run.history.length} recorded day${
-        run.history.length === 1 ? '' : 's'
-      }. Inventory level starts at ${inventoryLevels[0]} units and ends at ${
-        inventoryLevels[inventoryLevels.length - 1]
-      } units. Inventory position starts at ${inventoryPositions[0]} units and ends at ${
-        inventoryPositions[inventoryPositions.length - 1]
-      } units.`
-    : 'Inventory trend chart will appear after the first day is recorded.';
+    ? t('inventoryChartDescription', {
+        count: formatNumber(run.history.length),
+        endInventory: formatNumber(inventoryLevels[inventoryLevels.length - 1]),
+        endPosition: formatNumber(inventoryPositions[inventoryPositions.length - 1]),
+        startInventory: formatNumber(inventoryLevels[0]),
+        startPosition: formatNumber(inventoryPositions[0])
+      })
+    : t('inventoryChartPlaceholder');
 
   return (
     <section aria-labelledby="inventory-stage-title" className="inventory-stage supply-stage">
       <div className="stage-copy stage-copy-row">
         <div>
-          <p className="eyebrow">Supply Chain</p>
-          <h2 id="inventory-stage-title">Supplier, store, customers.</h2>
+          <p className="eyebrow">{t('inventorySupplyChain')}</p>
+          <h2 id="inventory-stage-title">{t('inventorySupplyChainTitle')}</h2>
         </div>
         <button className="ghost-button" type="button" onClick={() => setIsLogicOpen(true)}>
-          Game Logic
+          {t('inventoryGameLogic')}
         </button>
       </div>
 
@@ -115,19 +112,23 @@ export const InventoryStage = ({
           <div aria-hidden="true" className="node-icon">
             🏭
           </div>
-          <h3>Supplier</h3>
+          <h3>{t('inventorySupplier')}</h3>
           <dl className="node-stats node-stats-vertical">
             <div>
-              <dt>Today’s Order</dt>
-              <dd>{draftOrderQuantity}</dd>
+              <dt>{t('inventoryInTransit')}</dt>
+              <dd>{formatNumber(inTransitUnits)}</dd>
+            </div>
+            <div>
+              <dt>{t('inventoryTodayOrder')}</dt>
+              <dd>{formatNumber(draftOrderQuantity)}</dd>
             </div>
             <div className="config-block">
-              <dt>Lead Time</dt>
-              <dd>{settings.leadTimeDays} days</dd>
+              <dt>{t('inventoryLeadTime')}</dt>
+              <dd>{t('commonDay', { count: formatNumber(settings.leadTimeDays) })}</dd>
             </div>
             <div className="config-block">
-              <dt>Order Cost</dt>
-              <dd>{formatMoney(settings.orderingCostPer250Units)} / 250</dd>
+              <dt>{t('inventoryOrderCost')}</dt>
+              <dd>{t('inventoryOrderingCostValue', { cost: formatCurrency(settings.orderingCostPer250Units) })}</dd>
             </div>
           </dl>
         </article>
@@ -140,21 +141,21 @@ export const InventoryStage = ({
           <div aria-hidden="true" className="node-icon">
             🏪
           </div>
-          <h3>Store</h3>
+          <h3>{t('inventoryStore')}</h3>
           <div
             aria-describedby="inventory-chart-description"
-            aria-label="Inventory level and inventory position over time"
+            aria-label={t('inventoryChartAria')}
             className="store-chart"
             role="img"
           >
             <div className="chart-toolbar">
-              <span className="chart-title">Inventory Trend</span>
+              <span className="chart-title">{t('chartInventoryTrend')}</span>
               <button
                 className="ghost-button chart-expand-button"
                 type="button"
                 onClick={() => setIsChartExpanded(true)}
               >
-                Enlarge Chart
+                {t('inventoryEnlargeChart')}
               </button>
             </div>
             <p className="sr-only" id="inventory-chart-description">
@@ -166,7 +167,7 @@ export const InventoryStage = ({
               preserveAspectRatio="xMidYMid meet"
             >
               <text className="chart-axis-label" x={chartWidth / 2} y={chartHeight - 6} textAnchor="middle">
-                Day
+                {t('chartAxisDay')}
               </text>
               <text
                 className="chart-axis-label"
@@ -175,7 +176,7 @@ export const InventoryStage = ({
                 textAnchor="middle"
                 transform={`rotate(-90 12 ${chartHeight / 2})`}
               >
-                Units
+                {t('chartAxisUnits')}
               </text>
               <line
                 className="chart-axis"
@@ -243,26 +244,22 @@ export const InventoryStage = ({
             <div className="chart-legend">
               <span>
                 <i className="legend-dot legend-dot-level" />
-                Inventory Level
+                {t('chartInventoryLevel')}
               </span>
               <span>
                 <i className="legend-dot legend-dot-position" />
-                Inventory Position
+                {t('chartInventoryPosition')}
               </span>
             </div>
           </div>
           <dl className="node-stats">
             <div>
-              <dt>On Hand</dt>
-              <dd>{run.currentInventory}</dd>
+              <dt>{t('inventoryOnHand')}</dt>
+              <dd>{formatNumber(run.currentInventory)}</dd>
             </div>
             <div className="config-block">
-              <dt>Holding</dt>
-              <dd>{formatMoney(settings.holdingCostPerUnit)}</dd>
-            </div>
-            <div className="config-block">
-              <dt>Stockout</dt>
-              <dd>{formatMoney(settings.stockoutCostPerUnit)}</dd>
+              <dt>{t('inventoryHolding')}</dt>
+              <dd>{formatCurrency(settings.holdingCostPerUnit)}</dd>
             </div>
           </dl>
         </article>
@@ -275,19 +272,23 @@ export const InventoryStage = ({
           <div aria-hidden="true" className="node-icon">
             🧑‍🤝‍🧑
           </div>
-          <h3>Customers</h3>
+          <h3>{t('inventoryCustomers')}</h3>
           <dl className="node-stats node-stats-vertical">
             <div>
-              <dt>Today’s Demand</dt>
-              <dd>{todayDemand}</dd>
+              <dt>{t('inventoryTodayDemand')}</dt>
+              <dd>{formatNumber(todayDemand)}</dd>
             </div>
             <div>
-              <dt>Today’s Sales</dt>
-              <dd>{todaySoldUnits}</dd>
+              <dt>{t('inventoryTodaySales')}</dt>
+              <dd>{formatNumber(todaySoldUnits)}</dd>
             </div>
             <div>
-              <dt>Fill Rate</dt>
+              <dt>{t('inventoryFillRate')}</dt>
               <dd>{formatPercent(run.fillRate)}</dd>
+            </div>
+            <div className="config-block">
+              <dt>{t('inventoryStockout')}</dt>
+              <dd>{formatCurrency(settings.stockoutCostPerUnit)}</dd>
             </div>
           </dl>
         </article>
@@ -305,65 +306,64 @@ export const InventoryStage = ({
           >
             <div className="sheet-header">
               <div>
-                <p className="eyebrow">Game Logic</p>
-                <h2 id="logic-title">How the game works</h2>
+                <p className="eyebrow">{t('inventoryGameLogic')}</p>
+                <h2 id="logic-title">{t('inventoryHowGameWorks')}</h2>
               </div>
               <button className="ghost-button" type="button" onClick={() => setIsLogicOpen(false)}>
-                Close
+                {t('commonClose')}
               </button>
             </div>
 
             <div className="stack-md">
               <p className="support-copy">
-                You manage the store’s inventory for 30 days. Each day, customers arrive with random demand (10–20 units).
-                Your goal is to keep service high while controlling costs.
+                {t('inventoryLogicIntro')}
               </p>
 
               <div className="logic-two-col">
                 <div className="logic-block">
-                  <h3 className="logic-subtitle">Your decision</h3>
+                  <h3 className="logic-subtitle">{t('inventoryYourDecision')}</h3>
                   <ul className="logic-list">
-                    <li>Choose today’s ordering quantity.</li>
-                    <li>The order arrives after the lead time.</li>
+                    <li>{t('inventoryYouChooseTodayOrder')}</li>
+                    <li>{t('inventoryOrderArrivesAfterLeadTime')}</li>
                   </ul>
                 </div>
 
                 <div className="logic-block">
-                  <h3 className="logic-subtitle">What updates each day</h3>
+                  <h3 className="logic-subtitle">{t('inventoryWhatUpdatesEachDay')}</h3>
                   <ul className="logic-list">
-                    <li>Inventory Level (in store).</li>
-                    <li>Inventory Position (in store + on order).</li>
-                    <li>Sales and fill rate.</li>
+                    <li>{t('inventoryInventoryLevelInStore')}</li>
+                    <li>{t('inventoryInventoryPositionInStoreOnOrder')}</li>
+                    <li>{t('inventorySalesAndFillRate')}</li>
                   </ul>
                 </div>
               </div>
 
               <div className="logic-block">
-                <h3 className="logic-subtitle">Parameters (from Educator Settings)</h3>
+                <h3 className="logic-subtitle">{t('inventoryParametersFromSettings')}</h3>
                 <div className="logic-table-wrap">
                   <table className="logic-table">
                     <thead>
                       <tr>
-                        <th scope="col">Parameter</th>
-                        <th scope="col">Value</th>
+                        <th scope="col">{t('inventoryParameter')}</th>
+                        <th scope="col">{t('inventoryValue')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Lead time</th>
-                        <td>{settings.leadTimeDays} days</td>
+                        <th scope="row">{t('inventoryLeadTime')}</th>
+                        <td>{t('commonDay', { count: formatNumber(settings.leadTimeDays) })}</td>
                       </tr>
                       <tr>
-                        <th scope="row">Holding cost</th>
-                        <td>{formatMoney(settings.holdingCostPerUnit)} per unit per day</td>
+                        <th scope="row">{t('inventoryHolding')}</th>
+                        <td>{t('inventoryHoldingValue', { cost: formatCurrency(settings.holdingCostPerUnit) })}</td>
                       </tr>
                       <tr>
-                        <th scope="row">Stockout cost</th>
-                        <td>{formatMoney(settings.stockoutCostPerUnit)} per unit</td>
+                        <th scope="row">{t('inventoryStockout')}</th>
+                        <td>{t('inventoryStockoutValue', { cost: formatCurrency(settings.stockoutCostPerUnit) })}</td>
                       </tr>
                       <tr>
-                        <th scope="row">Ordering cost</th>
-                        <td>{formatMoney(settings.orderingCostPer250Units)} per 250 units (charged in blocks)</td>
+                        <th scope="row">{t('inventoryOrderCost')}</th>
+                        <td>{t('inventoryOrderCostDetail', { cost: formatCurrency(settings.orderingCostPer250Units) })}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -386,16 +386,16 @@ export const InventoryStage = ({
           >
             <div className="sheet-header">
               <div>
-                <p className="eyebrow">Store Chart</p>
-                <h2 id="expanded-chart-title">Inventory Level & Inventory Position</h2>
+                <p className="eyebrow">{t('inventoryStoreChart')}</p>
+                <h2 id="expanded-chart-title">{t('inventoryExpandedChartTitle')}</h2>
               </div>
               <button className="ghost-button" type="button" onClick={() => setIsChartExpanded(false)}>
-                Close
+                {t('commonClose')}
               </button>
             </div>
             <div
               aria-describedby="expanded-chart-description"
-              aria-label="Expanded inventory level and inventory position over time"
+              aria-label={t('inventoryChartAriaExpanded')}
               className="store-chart store-chart-expanded"
               role="img"
             >
@@ -404,7 +404,7 @@ export const InventoryStage = ({
               </p>
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} preserveAspectRatio="xMidYMid meet">
                 <text className="chart-axis-label" x={chartWidth / 2} y={chartHeight - 6} textAnchor="middle">
-                  Day
+                  {t('chartAxisDay')}
                 </text>
                 <text
                   className="chart-axis-label"
@@ -413,7 +413,7 @@ export const InventoryStage = ({
                   textAnchor="middle"
                   transform={`rotate(-90 12 ${chartHeight / 2})`}
                 >
-                  Units
+                  {t('chartAxisUnits')}
                 </text>
                 <line className="chart-axis" x1={chartPadding} x2={chartPadding} y1={chartPadding} y2={chartHeight - chartPadding} />
                 <line
@@ -459,11 +459,11 @@ export const InventoryStage = ({
               <div className="chart-legend">
                 <span>
                   <i className="legend-dot legend-dot-level" />
-                  Inventory Level
+                  {t('chartInventoryLevel')}
                 </span>
                 <span>
                   <i className="legend-dot legend-dot-position" />
-                  Inventory Position
+                  {t('chartInventoryPosition')}
                 </span>
               </div>
             </div>

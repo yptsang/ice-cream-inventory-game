@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { DEFAULT_SETTINGS_PASSWORD } from '../game/config';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
+import { useI18n } from '../i18n';
 import { isSettingsSessionUnlocked } from '../game/settingsAuth';
 
 interface SettingsGateProps {
@@ -9,6 +10,7 @@ interface SettingsGateProps {
 }
 
 export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
+  const { t } = useI18n();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const dialogRef = useAccessibleDialog<HTMLElement>({
@@ -27,7 +29,7 @@ export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
     const accepted = await onUnlock(password);
 
     if (!accepted) {
-      setError('That password did not unlock the settings panel.');
+      setError(t('settingsIncorrectPassword'));
     } else {
       setError('');
     }
@@ -44,11 +46,11 @@ export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
         role="dialog"
         tabIndex={-1}
       >
-        <p className="eyebrow">Educator access</p>
-        <h2 id="settings-gate-title">Enter the settings password</h2>
+        <p className="eyebrow">{t('settingsEducatorAccess')}</p>
+        <h2 id="settings-gate-title">{t('settingsEnterPassword')}</h2>
 
         <form className="stack-sm" onSubmit={handleSubmit}>
-          <label htmlFor="settings-password">Password</label>
+          <label htmlFor="settings-password">{t('settingsPassword')}</label>
           <input
             autoComplete="current-password"
             id="settings-password"
@@ -64,10 +66,10 @@ export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
           ) : null}
           <div className="inline-actions">
             <button className="secondary-button" type="button" onClick={onCancel}>
-              Cancel
+              {t('commonCancel')}
             </button>
             <button className="primary-button" type="submit">
-              Unlock
+              {t('settingsUnlock')}
             </button>
           </div>
         </form>

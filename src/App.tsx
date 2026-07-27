@@ -6,17 +6,12 @@ import { SettingsGate } from './components/SettingsGate';
 import { SettingsPanel } from './components/SettingsPanel';
 import { TopBar } from './components/TopBar';
 import { DAYS_IN_RUN } from './game/config';
+import { useI18n } from './i18n';
 import { useGameStore } from './state/gameStore';
-
-const formatMoney = (value: number) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 2
-  }).format(value);
 
 const App = () => {
   const [isTopBarMinimized, setIsTopBarMinimized] = useState(false);
+  const { formatCurrency, t } = useI18n();
   const {
     advanceToNextDay,
     closeSettings,
@@ -42,24 +37,37 @@ const App = () => {
   if (!hasHydrated) {
     return (
       <div aria-live="polite" className="loading-shell" role="status">
-        Loading game…
+        {t('appLoadingGame')}
       </div>
     );
   }
 
   const totalCost = run.totalHoldingCost + run.totalOrderingCost + run.totalStockoutCost;
   const latestUpdate = latestEntry
-    ? `Day ${latestEntry.day} recorded. Received ${latestEntry.receivedQuantity}, demand ${latestEntry.demand}, sold ${latestEntry.soldUnits}, ending inventory ${latestEntry.endingInventory}, daily cost ${formatMoney(latestEntry.dailyTotalCost)}.`
-    : `Day ${Math.min(run.day, DAYS_IN_RUN)} ready. Set today’s ordering quantity.`;
+    ? t('latestRecordedUpdate', {
+        cost: formatCurrency(latestEntry.dailyTotalCost),
+        day: latestEntry.day,
+        demand: latestEntry.demand,
+        endingInventory: latestEntry.endingInventory,
+        received: latestEntry.receivedQuantity,
+        sold: latestEntry.soldUnits
+      })
+    : t('latestReadyUpdate', { day: Math.min(run.day, DAYS_IN_RUN) });
 
   return (
     <>
       <a className="skip-link" href="#main-content">
-        Skip to game controls
+        {t('appSkipToControls')}
       </a>
 
       <div className="app-shell">
-        <p aria-atomic="true" aria-live="polite" className="sr-only" id="game-status">
+        <p
+          aria-atomic="true"
+          aria-label={t('appGameStatus')}
+          aria-live="polite"
+          className="sr-only"
+          id="game-status"
+        >
           {latestUpdate}
         </p>
 
@@ -83,7 +91,7 @@ const App = () => {
         <ActionBar isCompleted={run.status === 'completed'} onAdvance={advanceToNextDay} onNewGame={startNewGame} />
 
         {run.status === 'completed' && run.summary ? (
-          <MonthResultSheet summary={run.summary} onNewGame={startNewGame} />
+          <MonthResultSheet onNewGame={startNewGame} settings={settings} summary={run.summary} />
         ) : null}
 
         {isSettingsGateOpen ? (
@@ -94,9 +102,9 @@ const App = () => {
           <SettingsPanel onCancel={closeSettings} onSave={saveSettings} settings={settings} />
         ) : null}
 
-        <footer className="footer-settings" aria-label="Educator controls">
+        <footer className="footer-settings" aria-label={t('footerEducatorControls')}>
           <button className="ghost-button footer-settings-button" type="button" onClick={openSettings}>
-            Educator Settings
+            {t('footerEducatorSettings')}
           </button>
         </footer>
       </div>

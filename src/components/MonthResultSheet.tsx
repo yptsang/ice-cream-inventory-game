@@ -1,27 +1,25 @@
+import { useI18n, getTranslatedMonthEvaluation } from '../i18n';
 import type { MonthSummary } from '../game/types';
+import type { GameSettings } from '../game/types';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 
-const formatMoney = (value: number) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 2
-  }).format(value);
-
 interface MonthResultSheetProps {
+  settings: GameSettings;
   summary: MonthSummary;
   onNewGame: () => void;
 }
 
-export const MonthResultSheet = ({ summary, onNewGame }: MonthResultSheetProps) => (
-  <MonthResultDialog summary={summary} onNewGame={onNewGame} />
+export const MonthResultSheet = ({ settings, summary, onNewGame }: MonthResultSheetProps) => (
+  <MonthResultDialog onNewGame={onNewGame} settings={settings} summary={summary} />
 );
 
-const MonthResultDialog = ({ summary, onNewGame }: MonthResultSheetProps) => {
+const MonthResultDialog = ({ settings, summary, onNewGame }: MonthResultSheetProps) => {
+  const { formatCurrency, formatPercent, language, t } = useI18n();
   const dialogRef = useAccessibleDialog<HTMLElement>({
     isOpen: true,
     onClose: onNewGame
   });
+  const evaluation = getTranslatedMonthEvaluation(language, summary, settings);
 
   return (
     <div className="overlay">
@@ -34,31 +32,31 @@ const MonthResultDialog = ({ summary, onNewGame }: MonthResultSheetProps) => {
         role="dialog"
         tabIndex={-1}
       >
-        <p className="eyebrow">30-day result</p>
-        <h2 id="month-result-title">{summary.evaluation.label}</h2>
-        <p id="month-result-description">{summary.evaluation.description}</p>
+        <p className="eyebrow">{t('monthResult30Day')}</p>
+        <h2 id="month-result-title">{evaluation.label}</h2>
+        <p id="month-result-description">{evaluation.description}</p>
 
         <dl className="sheet-grid">
           <div>
-            <dt>Total fill rate</dt>
-            <dd>{Math.round(summary.fillRate * 100)}%</dd>
+            <dt>{t('monthResultTotalFillRate')}</dt>
+            <dd>{formatPercent(summary.fillRate)}</dd>
           </div>
           <div>
-            <dt>Total sold units</dt>
+            <dt>{t('monthResultTotalSoldUnits')}</dt>
             <dd>{summary.totalUnitsSold}</dd>
           </div>
           <div>
-            <dt>Total inventory cost</dt>
-            <dd>{formatMoney(summary.totalInventoryManagementCost)}</dd>
+            <dt>{t('monthResultTotalInventoryCost')}</dt>
+            <dd>{formatCurrency(summary.totalInventoryManagementCost)}</dd>
           </div>
           <div>
-            <dt>Cost per unit sold</dt>
-            <dd>{Number.isFinite(summary.performanceRatio) ? formatMoney(summary.performanceRatio) : 'N/A'}</dd>
+            <dt>{t('monthResultCostPerUnitSold')}</dt>
+            <dd>{Number.isFinite(summary.performanceRatio) ? formatCurrency(summary.performanceRatio) : t('commonNA')}</dd>
           </div>
         </dl>
 
         <button className="primary-button full-width" type="button" onClick={onNewGame}>
-          Start a New 30-Day Run
+          {t('monthResultStartNewRun')}
         </button>
       </section>
     </div>

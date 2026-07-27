@@ -123,6 +123,13 @@ input:focus-visible,
   gap: var(--space-2);
 }
 
+.top-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
 .top-bar-minimized {
   padding-block: 0.95rem;
 }
@@ -136,6 +143,23 @@ input:focus-visible,
 .top-bar-header {
   display: grid;
   gap: var(--space-1);
+}
+
+.language-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.language-button {
+  min-width: 5.5rem;
+  padding: 0.78rem 0.9rem;
+}
+
+.language-button-active {
+  background: rgba(20, 20, 19, 0.12);
+  border-color: rgba(20, 20, 19, 0.1);
 }
 
 .eyebrow {
@@ -823,7 +847,7 @@ input:focus-visible,
   }
 
   .top-bar .metrics-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .supply-chain-board {

@@ -1,12 +1,6 @@
 import type { DailyLedgerEntry } from '../game/types';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
-
-const formatMoney = (value: number) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 2
-  }).format(value);
+import { useI18n } from '../i18n';
 
 interface DaySummarySheetProps {
   entry: DailyLedgerEntry;
@@ -18,6 +12,7 @@ export const DaySummarySheet = ({ entry, onClose }: DaySummarySheetProps) => (
 );
 
 const DaySummaryDialog = ({ entry, onClose }: DaySummarySheetProps) => {
+  const { formatCurrency, formatNumber, formatPercent, t } = useI18n();
   const dialogRef = useAccessibleDialog<HTMLElement>({
     isOpen: true,
     onClose
@@ -36,57 +31,57 @@ const DaySummaryDialog = ({ entry, onClose }: DaySummarySheetProps) => {
       >
         <div className="sheet-header">
           <div>
-            <p className="eyebrow">Daily feedback</p>
-            <h2 id="day-summary-title">Day {entry.day} summary</h2>
+            <p className="eyebrow">{t('daySummaryDailyFeedback')}</p>
+            <h2 id="day-summary-title">{t('commonDaySummary', { day: formatNumber(entry.day) })}</h2>
             <p className="support-copy" id="day-summary-description">
-              Review demand, inventory, and today’s cost outcome.
+              {t('daySummaryDescription')}
             </p>
           </div>
           <button className="ghost-button" type="button" onClick={onClose}>
-            Close
+            {t('commonClose')}
           </button>
         </div>
 
         <dl className="sheet-grid">
           <div>
-            <dt>Received</dt>
-            <dd>{entry.receivedQuantity}</dd>
+            <dt>{t('daySummaryReceived')}</dt>
+            <dd>{formatNumber(entry.receivedQuantity)}</dd>
           </div>
           <div>
-            <dt>Demand</dt>
-            <dd>{entry.demand}</dd>
+            <dt>{t('daySummaryDemand')}</dt>
+            <dd>{formatNumber(entry.demand)}</dd>
           </div>
           <div>
-            <dt>Sold units</dt>
-            <dd>{entry.soldUnits}</dd>
+            <dt>{t('daySummarySoldUnits')}</dt>
+            <dd>{formatNumber(entry.soldUnits)}</dd>
           </div>
           <div>
-            <dt>Ending inventory</dt>
-            <dd>{entry.endingInventory}</dd>
+            <dt>{t('daySummaryEndingInventory')}</dt>
+            <dd>{formatNumber(entry.endingInventory)}</dd>
           </div>
           <div>
-            <dt>Stockouts</dt>
-            <dd>{entry.stockoutUnits}</dd>
+            <dt>{t('daySummaryStockouts')}</dt>
+            <dd>{formatNumber(entry.stockoutUnits)}</dd>
           </div>
           <div>
-            <dt>Holding cost</dt>
-            <dd>{formatMoney(entry.holdingCost)}</dd>
+            <dt>{t('daySummaryHoldingCost')}</dt>
+            <dd>{formatCurrency(entry.holdingCost)}</dd>
           </div>
           <div>
-            <dt>Order fee</dt>
-            <dd>{formatMoney(entry.orderingCost)}</dd>
+            <dt>{t('daySummaryOrderFee')}</dt>
+            <dd>{formatCurrency(entry.orderingCost)}</dd>
           </div>
           <div>
-            <dt>Stockout cost</dt>
-            <dd>{formatMoney(entry.stockoutCost)}</dd>
+            <dt>{t('daySummaryStockoutCost')}</dt>
+            <dd>{formatCurrency(entry.stockoutCost)}</dd>
           </div>
           <div>
-            <dt>Daily total cost</dt>
-            <dd>{formatMoney(entry.dailyTotalCost)}</dd>
+            <dt>{t('daySummaryDailyTotalCost')}</dt>
+            <dd>{formatCurrency(entry.dailyTotalCost)}</dd>
           </div>
           <div>
-            <dt>Fill rate</dt>
-            <dd>{Math.round(entry.runningFillRate * 100)}%</dd>
+            <dt>{t('daySummaryFillRate')}</dt>
+            <dd>{formatPercent(entry.runningFillRate)}</dd>
           </div>
         </dl>
       </section>
