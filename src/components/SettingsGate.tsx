@@ -46,7 +46,6 @@ export const SettingsGate = ({ onUnlock, onCancel }: SettingsGateProps) => {
       >
         <p className="eyebrow">Educator access</p>
         <h2 id="settings-gate-title">Enter the settings password</h2>
-        <p id="settings-gate-description">Default demo password: {DEFAULT_SETTINGS_PASSWORD}</p>
 
         <form className="stack-sm" onSubmit={handleSubmit}>
           <label htmlFor="settings-password">Password</label>
