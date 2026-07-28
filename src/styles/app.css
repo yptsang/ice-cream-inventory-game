@@ -788,7 +788,41 @@ input:focus-visible,
 }
 
 .result-sheet {
+  width: min(100%, 64rem);
   margin-bottom: 4.8rem;
+}
+
+.result-chart-block,
+.store-chart-wrap {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.result-chart-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  color: var(--ink);
+}
+
+.result-sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.result-sheet-primary-action {
+  min-width: 14rem;
+}
+
+.result-sheet-error {
+  margin-top: var(--space-2);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(199, 93, 85, 0.12);
+  color: var(--danger);
 }
 
 .band-fieldset {

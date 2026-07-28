@@ -142,6 +142,8 @@ const translations = {
     monthResultCostPerUnitSold: 'Cost per unit sold',
     monthResultMinimumDescription: ({ minimum, sold }) =>
       `You sold ${sold} units, which is below the required minimum of ${minimum}.`,
+    monthResultSaveImage: 'Save Result',
+    monthResultSaveImageError: 'Could not save the result image. Please try again.',
     monthResultStartNewRun: 'Start a New 30-Day Run',
     monthResultTotalFillRate: 'Total fill rate',
     monthResultTotalInventoryCost: 'Total inventory cost',
@@ -295,6 +297,8 @@ const translations = {
     monthResultCostPerUnitSold: '每售出單位成本',
     monthResultMinimumDescription: ({ minimum, sold }) =>
       `你售出 ${sold} 單位，低於規定最低 ${minimum} 單位。`,
+    monthResultSaveImage: '儲存結果',
+    monthResultSaveImageError: '無法儲存結果圖片，請再試一次。',
     monthResultStartNewRun: '開始新的 30 天回合',
     monthResultTotalFillRate: '總滿足率',
     monthResultTotalInventoryCost: '總庫存管理成本',
@@ -444,6 +448,8 @@ const translations = {
     monthResultCostPerUnitSold: '每售出单位成本',
     monthResultMinimumDescription: ({ minimum, sold }) =>
       `你售出 ${sold} 单位，低于要求的最低 ${minimum} 单位。`,
+    monthResultSaveImage: '保存结果',
+    monthResultSaveImageError: '无法保存结果图片，请再试一次。',
     monthResultStartNewRun: '开始新的 30 天回合',
     monthResultTotalFillRate: '总满足率',
     monthResultTotalInventoryCost: '总库存管理成本',
