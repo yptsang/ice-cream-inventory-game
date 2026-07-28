@@ -35,7 +35,7 @@ describe('App', () => {
     });
   });
 
-  it('hides the floating utility panel after language selection and reopens it from the footer', async () => {
+  it('starts with the floating utility panel hidden and reopens it from the footer', async () => {
     const user = userEvent.setup();
 
     render(
@@ -44,11 +44,7 @@ describe('App', () => {
       </I18nProvider>
     );
 
-    expect(screen.getByRole('group', { name: /language/i })).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: '简体中文' }));
-
-    expect(screen.queryByRole('group', { name: /language/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: /language|語言/i })).not.toBeInTheDocument();
 
     const reopenButton = screen.getByRole('button', {
       name: /show language & settings|显示语言与设置|顯示語言與設定/i
@@ -56,6 +52,6 @@ describe('App', () => {
 
     await user.click(reopenButton);
 
-    expect(screen.getByRole('group', { name: /语言/i })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: /language|語言/i })).toBeInTheDocument();
   });
 });

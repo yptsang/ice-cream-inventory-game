@@ -27,6 +27,22 @@ describe('InventoryStage', () => {
     expect(container.querySelector('.chart-line-position')).toBeInTheDocument();
   });
 
+  it('renders all three trend series in the store chart', () => {
+    const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
+
+    const { container } = render(
+      <InventoryStage
+        draftOrderQuantity={18}
+        settings={DEFAULT_SETTINGS}
+        run={result.run}
+      />
+    );
+
+    expect(container.querySelector('.chart-line-level')).toBeInTheDocument();
+    expect(container.querySelector('.chart-line-position')).toBeInTheDocument();
+    expect(container.querySelector('.chart-line-demand')).toBeInTheDocument();
+  });
+
   it('shows in-transit inventory under Supplier and stockout cost under Customers', () => {
     const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
 

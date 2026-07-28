@@ -12,7 +12,7 @@ import { useGameStore } from './state/gameStore';
 
 const App = () => {
   const [isTopBarMinimized, setIsTopBarMinimized] = useState(false);
-  const [isFooterUtilityPanelVisible, setIsFooterUtilityPanelVisible] = useState(true);
+  const [isFooterUtilityPanelVisible, setIsFooterUtilityPanelVisible] = useState(false);
   const { formatCurrency, t } = useI18n();
   const {
     advanceToNextDay,
@@ -93,7 +93,7 @@ const App = () => {
         <ActionBar isCompleted={run.status === 'completed'} onAdvance={advanceToNextDay} onNewGame={startNewGame} />
 
         {run.status === 'completed' && run.summary ? (
-          <MonthResultSheet onNewGame={startNewGame} settings={settings} summary={run.summary} />
+          <MonthResultSheet onNewGame={startNewGame} run={run} settings={settings} summary={run.summary} />
         ) : null}
 
         {isSettingsGateOpen ? (
