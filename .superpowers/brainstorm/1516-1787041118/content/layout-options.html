@@ -1,0 +1,148 @@
+<h2>Choose a visual direction for the inventory game</h2>
+<p class="subtitle">Each option keeps the current gameplay model, but changes the phone-first hierarchy, polish, and retail personality.</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">A. Hero-first storefront</div>
+        <div class="mockup-body" style="padding:16px;background:linear-gradient(180deg,#fff4f6 0%,#fffdf8 100%);">
+          <div style="border-radius:18px;background:linear-gradient(135deg,#ff8fb1 0%,#ffd36e 100%);padding:16px 14px;color:#3b2330;box-shadow:0 10px 24px rgba(255,143,177,0.28);">
+            <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.8;">Day 12 of 30</div>
+            <div style="margin-top:8px;font-size:24px;font-weight:800;line-height:1.05;">Run your sweetest stock plan</div>
+            <div style="margin-top:10px;font-size:13px;opacity:.85;">Inventory, demand, and costs feel like a playful mobile game.</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+            <div style="border-radius:14px;background:#ffffff;padding:12px;box-shadow:0 6px 18px rgba(50,40,60,0.08);">
+              <div style="font-size:11px;color:#7b6f83;">In stock</div>
+              <div style="font-size:22px;font-weight:800;color:#36283d;">420</div>
+            </div>
+            <div style="border-radius:14px;background:#ffffff;padding:12px;box-shadow:0 6px 18px rgba(50,40,60,0.08);">
+              <div style="font-size:11px;color:#7b6f83;">Fill rate</div>
+              <div style="font-size:22px;font-weight:800;color:#36283d;">93%</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;border-radius:16px;background:#ffffff;padding:12px;box-shadow:0 6px 18px rgba(50,40,60,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong style="font-size:14px;color:#36283d;">Today's order</strong>
+              <span style="font-size:13px;color:#7b6f83;">250 units</span>
+            </div>
+            <div style="height:8px;border-radius:999px;background:#f4d6de;"></div>
+            <div style="margin-top:10px;background:#ff7aa2;color:#fff;text-align:center;padding:10px;border-radius:12px;font-weight:700;">Next day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Hero-first storefront</h3>
+      <p>Leads with a colorful summary card and polished KPI tiles, then moves into ordering and the supply chain.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">B. Gameboard focus</div>
+        <div class="mockup-body" style="padding:16px;background:linear-gradient(180deg,#fef7ec 0%,#fffefe 100%);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div>
+              <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#b7772f;">Supply chain</div>
+              <div style="font-size:22px;font-weight:800;color:#3c2b1f;">Day 12</div>
+            </div>
+            <div style="padding:8px 12px;border-radius:999px;background:#fff0db;font-size:12px;font-weight:700;color:#9b6223;">Phone mode</div>
+          </div>
+          <div style="display:grid;gap:10px;">
+            <div style="border-radius:16px;background:#fff;padding:12px;box-shadow:0 8px 18px rgba(84,56,26,0.08);">
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#7c6a5e;"><span>Supplier</span><span>Lead time 2d</span></div>
+              <div style="margin-top:8px;height:10px;border-radius:999px;background:linear-gradient(90deg,#ffb660 0%,#ffdca9 100%);"></div>
+            </div>
+            <div style="border-radius:18px;background:linear-gradient(135deg,#7dd3c9 0%,#b6f3de 100%);padding:16px;box-shadow:0 10px 22px rgba(30,130,118,0.18);">
+              <div style="font-size:13px;color:#1d4f49;">Store</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+                <div style="border-radius:12px;background:rgba(255,255,255,0.78);padding:10px;">
+                  <div style="font-size:11px;color:#2f5f58;">On hand</div>
+                  <div style="font-size:20px;font-weight:800;color:#153d38;">420</div>
+                </div>
+                <div style="border-radius:12px;background:rgba(255,255,255,0.78);padding:10px;">
+                  <div style="font-size:11px;color:#2f5f58;">Demand</div>
+                  <div style="font-size:20px;font-weight:800;color:#153d38;">280</div>
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:16px;background:#fff;padding:12px;box-shadow:0 8px 18px rgba(84,56,26,0.08);">
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#7c6a5e;"><span>Customers</span><span>Fill rate 93%</span></div>
+              <div style="margin-top:8px;height:10px;border-radius:999px;background:linear-gradient(90deg,#ff8f6b 0%,#ffd4bb 100%);"></div>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <div style="flex:1;background:#1f7a70;color:#fff;text-align:center;padding:10px;border-radius:12px;font-weight:700;">Order panel</div>
+            <div style="flex:1;background:#3c2b1f;color:#fff;text-align:center;padding:10px;border-radius:12px;font-weight:700;">Next day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Gameboard focus</h3>
+      <p>Puts the supplier-store-customer journey at center stage, with the game feeling more spatial and touch-driven.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">C. Bottom-sheet controls</div>
+        <div class="mockup-body" style="padding:16px;background:linear-gradient(180deg,#f7f8ff 0%,#fffdfd 100%);position:relative;">
+          <div style="border-radius:18px;background:#ffffff;padding:14px;box-shadow:0 8px 20px rgba(63,73,138,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div>
+                <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6a72d9;">Inventory sprint</div>
+                <div style="margin-top:6px;font-size:22px;font-weight:800;color:#2f356e;">Day 12 of 30</div>
+              </div>
+              <div style="font-size:12px;color:#7277a3;">Cost $840</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;">
+              <div style="border-radius:12px;background:#f1f3ff;padding:10px;text-align:center;">
+                <div style="font-size:11px;color:#7377a5;">Stock</div>
+                <div style="font-size:18px;font-weight:800;color:#2f356e;">420</div>
+              </div>
+              <div style="border-radius:12px;background:#f1f3ff;padding:10px;text-align:center;">
+                <div style="font-size:11px;color:#7377a5;">Demand</div>
+                <div style="font-size:18px;font-weight:800;color:#2f356e;">280</div>
+              </div>
+              <div style="border-radius:12px;background:#f1f3ff;padding:10px;text-align:center;">
+                <div style="font-size:11px;color:#7377a5;">Fill</div>
+                <div style="font-size:18px;font-weight:800;color:#2f356e;">93%</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;height:88px;border-radius:14px;background:linear-gradient(180deg,#f6f8ff 0%,#e9eeff 100%);display:flex;align-items:flex-end;gap:6px;padding:12px;">
+              <div style="width:14%;height:36%;border-radius:8px 8px 0 0;background:#c6cffd;"></div>
+              <div style="width:14%;height:62%;border-radius:8px 8px 0 0;background:#aab9ff;"></div>
+              <div style="width:14%;height:48%;border-radius:8px 8px 0 0;background:#8ea2ff;"></div>
+              <div style="width:14%;height:70%;border-radius:8px 8px 0 0;background:#7691ff;"></div>
+              <div style="width:14%;height:40%;border-radius:8px 8px 0 0;background:#5e80ff;"></div>
+              <div style="width:14%;height:58%;border-radius:8px 8px 0 0;background:#4f73f4;"></div>
+            </div>
+          </div>
+          <div style="margin-top:12px;border-radius:22px 22px 14px 14px;background:#ffffff;padding:14px;box-shadow:0 16px 26px rgba(63,73,138,0.12);border:1px solid #eceffd;">
+            <div style="width:42px;height:5px;border-radius:999px;background:#d5daf9;margin:0 auto 12px;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong style="font-size:15px;color:#2f356e;">Set order quantity</strong>
+              <span style="font-size:13px;color:#6d73a4;">250 units</span>
+            </div>
+            <div style="margin-top:12px;height:8px;border-radius:999px;background:#eceffd;"></div>
+            <div style="margin-top:12px;background:#5e6dff;color:#fff;text-align:center;padding:11px;border-radius:14px;font-weight:700;">Advance day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Bottom-sheet controls</h3>
+      <p>Keeps the dashboard and chart visible while moving order entry and actions into a mobile-native control sheet.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Recommended</h3>
+  <p class="subtitle">I recommend <strong>A. Hero-first storefront</strong> if your goal is stronger visual polish without making the game harder to understand. It keeps the core metrics obvious, feels friendlier on phones, and gives the inventory game a more memorable retail identity.</p>
+</div>
