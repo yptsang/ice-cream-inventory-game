@@ -35,7 +35,7 @@ describe('App', () => {
     });
   });
 
-  it('starts with the floating utility panel hidden and reopens it from the footer', async () => {
+  it('renders a hero summary card while keeping the utility panel hidden until reopened', async () => {
     const user = userEvent.setup();
 
     render(
@@ -44,13 +44,17 @@ describe('App', () => {
       </I18nProvider>
     );
 
+    expect(
+      screen.getByRole('heading', { level: 2, name: /choose today’s ordering quantity/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/today’s demand/i)).toBeInTheDocument();
     expect(screen.queryByRole('group', { name: /language|語言/i })).not.toBeInTheDocument();
 
-    const reopenButton = screen.getByRole('button', {
-      name: /show language & settings|显示语言与设置|顯示語言與設定/i
-    });
-
-    await user.click(reopenButton);
+    await user.click(
+      screen.getByRole('button', {
+        name: /show language & settings|显示语言与设置|顯示語言與設定/i
+      })
+    );
 
     expect(screen.getByRole('group', { name: /language|語言/i })).toBeInTheDocument();
   });

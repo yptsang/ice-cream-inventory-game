@@ -5,23 +5,19 @@ import { advanceDay, createNewRun } from '../game/engine';
 import { TopBar } from './TopBar';
 
 describe('TopBar', () => {
-  it("shows today's demand in the sticky metrics row without crowding it with language buttons", () => {
+  it('keeps the sticky header lightweight and removes embedded order controls', () => {
     const result = advanceDay(createNewRun(12), 18, DEFAULT_SETTINGS);
 
     render(
       <TopBar
-        draftOrderQuantity={18}
         isMinimized={false}
-        onOrderChange={vi.fn()}
         onToggleMinimized={vi.fn()}
         run={result.run}
-        totalCost={result.run.totalHoldingCost + result.run.totalOrderingCost + result.run.totalStockoutCost}
       />
     );
 
-    expect(screen.getByText(/today.s demand/i)).toBeInTheDocument();
-    expect(screen.getByText(String(result.run.history.at(-1)?.demand ?? 0))).toBeInTheDocument();
-    expect(screen.queryByText(/in transit/i)).not.toBeInTheDocument();
-    expect(screen.queryByRole('group', { name: /language/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /day 2 of 30/i })).toBeInTheDocument();
+    expect(screen.queryByRole('slider', { name: /order quantity slider/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/today’s demand/i)).not.toBeInTheDocument();
   });
 });
